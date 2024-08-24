@@ -6,7 +6,7 @@ public class Pokemon {
     private int id;
     private String name;
     private String type;
-    private int Total;
+    private int total;
     private int hitPoints;
     private int attack;
     private int defense;
@@ -24,7 +24,7 @@ public class Pokemon {
         this.id = id;
         this.name = name;
         this.type = type;
-        Total = total;
+        this.total = total;
         this.hitPoints = hitPoints;
         this.attack = attack;
         this.defense = defense;
@@ -60,11 +60,11 @@ public class Pokemon {
     }
 
     public int getTotal() {
-        return Total;
+        return total;
     }
 
     public void setTotal(int total) {
-        Total = total;
+        this.total = total;
     }
 
     public int getHitPoints() {

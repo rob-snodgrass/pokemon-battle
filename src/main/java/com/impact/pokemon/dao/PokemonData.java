@@ -40,12 +40,15 @@ public class PokemonData {
                     continue;}
                 String lineOfText = fileInput.nextLine();
                 String[] lineValues = lineOfText.split(",");
-                Pokemon pokemon = mapRowToPokemon(lineValues);
-                pokemonList.add(pokemon);
+                //I want to verify that the data I am being passed isn't empty before working with ints, which would cause a null exception
+                if(!lineValues[0].isEmpty()) {
+                    Pokemon pokemon = mapRowToPokemon(lineValues);
+                    pokemonList.add(pokemon);
+                }
             }
 
         } catch (FileNotFoundException ex) {
-            //todo add something
+            //todo throw custom exception
             ex.printStackTrace();
         }
         return pokemonList;
