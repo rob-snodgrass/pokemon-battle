@@ -21,10 +21,12 @@ public class PokemonController {
     @Resource
     private PokemonData data;
 
+    //this will become /pokemon to retrieve all for the front end
     @GetMapping("test")
-    public List<Pokemon> retrieveList(){
+    public List<Pokemon> retrieveAllPokemon(){
         return data.retrievePokemon();
     }
+
 
     @GetMapping("attack")
     public Map<String, Object> attack(String pokemonA, String pokemonB) throws IOException {
