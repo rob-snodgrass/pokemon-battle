@@ -7,7 +7,7 @@ public class Pokemon {
     private String name;
     private String type;
     private int total;
-    private int hitPoints;
+    private double hitPoints;
     private int attack;
     private int defense;
     private int specialAttack;
@@ -18,7 +18,7 @@ public class Pokemon {
 
     public Pokemon(){}
 
-    public Pokemon(int id, String name, String type, int total, int hitPoints,
+    public Pokemon(int id, String name, String type, int total, double hitPoints,
                    int attack, int defense, int specialAttack, int specialDefense,
                    int speed, int generation, String legendary) {
         this.id = id;
@@ -33,6 +33,22 @@ public class Pokemon {
         this.speed = speed;
         this.generation = generation;
         this.legendary = legendary;
+    }
+
+    // I was encountering a problem with the pokemonBattle method using the same in-memory pokemon from my list, so I need the ability to create a cloned object to maintain encapsulation
+    public Pokemon(Pokemon pokemon) {
+        this.id = pokemon.getId();
+        this.name = pokemon.getName();
+        this.type = pokemon.getType();
+        this.total = pokemon.getTotal();
+        this.hitPoints = pokemon.getHitPoints();
+        this.attack = pokemon.getAttack();
+        this.defense = pokemon.getDefense();
+        this.specialAttack = pokemon.getSpecialAttack();
+        this.specialDefense = pokemon.getSpecialDefense();
+        this.speed = pokemon.getSpeed();
+        this.generation = pokemon.getGeneration();
+        this.legendary = pokemon.getLegendary();
     }
 
     public int getId() {
@@ -67,11 +83,11 @@ public class Pokemon {
         this.total = total;
     }
 
-    public int getHitPoints() {
+    public double getHitPoints() {
         return hitPoints;
     }
 
-    public void setHitPoints(int hitPoints) {
+    public void setHitPoints(double hitPoints) {
         this.hitPoints = hitPoints;
     }
 

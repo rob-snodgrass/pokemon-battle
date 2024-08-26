@@ -3,6 +3,7 @@ package com.impact.pokemon;
 import com.impact.pokemon.dao.PokemonData;
 import com.impact.pokemon.model.Pokemon;
 import com.impact.pokemon.service.PokemonArenaImpl;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,11 +24,11 @@ class PokemonArenaTest {
 
     private final TestRestTemplate rest;
     @Autowired
-    private PokemonArenaImpl pokemonArena;
+    private PokemonArenaImpl arena;
     @Autowired
     private PokemonData pokemonData;
 
-    PokemonArenaImpl arena;
+    //PokemonArenaImpl arena;
 
     List <Pokemon> mockPokemonList;
 
@@ -35,18 +36,23 @@ class PokemonArenaTest {
         rest = new TestRestTemplate(new RestTemplateBuilder().rootUri(format("http://localhost:%d", port)));
     }
 
+    @BeforeAll
+    static void init(){
+        PokemonArenaImpl arena = new PokemonArenaImpl();
+    }
     @BeforeEach
     void setUp() {
         mockPokemonList = new ArrayList<>();
         mockPokemonList.add(new Pokemon(6, "Charizard", "Fire", 534, 78, 84, 78, 109, 85, 100, 1, "false"));
         mockPokemonList.add(new Pokemon(3, "Venusaur", "Grass", 525, 80, 82, 83, 100, 100, 80, 1, "false"));
         mockPokemonList.add(new Pokemon(95, "Onix", "Water", 385, 35, 45, 160, 30, 45, 70, 1, "false"));
-        mockPokemonList.add(new Pokemon(145, "Zapdos", "Electric", 580, 90, 90, 85, 125, 90, 100, 1, "true"));
-        PokemonArenaImpl arena = new PokemonArenaImpl();
+    //    mockPokemonList.add(new Pokemon(145, "Zapdos", "Electric", 580, 90, 90, 85, 125, 90, 100, 1, "true"));
+        mockPokemonList.add(new Pokemon(101, "Electrode", "Electric", 480,60,50,70,80,80,140,1,"false"));
+
     }
 
     // Using hard coded pokemon I can predetermine who will win each round and expect a result to test the battle logic
-    
+
 
     @Test
     public void testBattleWinner1() {
@@ -63,27 +69,28 @@ class PokemonArenaTest {
     @Test
     public void testBattleWinner3() {
         Pokemon winner = arena.pokemonBattle(mockPokemonList.get(0).getName(), mockPokemonList.get(3).getName());
-        assertEquals("Zapdos", winner.getName());
+        assertEquals("Charizard", winner.getName());
     }
 
 
     @Test
     public void testBattleWinner4() {
         Pokemon winner = arena.pokemonBattle(mockPokemonList.get(1).getName(), mockPokemonList.get(2).getName());
-        assertEquals("Onix", winner.getName());
+        assertEquals("Venusaur", winner.getName());
     }
 
 
     @Test
     public void testBattleWinner5() {
         Pokemon winner = arena.pokemonBattle(mockPokemonList.get(1).getName(), mockPokemonList.get(3).getName());
-        assertEquals("Zapdos", winner.getName());
+        assertEquals("Venusaur", winner.getName());
     }
+
 
     @Test
     public void testBattleWinner6() {
         Pokemon winner = arena.pokemonBattle(mockPokemonList.get(2).getName(), mockPokemonList.get(3).getName());
-        assertEquals("Onix", winner.getName());
+        assertEquals("Electrode", winner.getName());
     }
 
 

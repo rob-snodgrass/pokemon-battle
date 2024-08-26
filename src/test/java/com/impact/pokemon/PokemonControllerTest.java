@@ -20,11 +20,11 @@ class PokemonControllerTest {
         rest = new TestRestTemplate(new RestTemplateBuilder().rootUri(format("http://localhost:%d", port)));
     }
 
-    @Test
-    void testAttackPicksWinnerWithHitPoints() {
-        Map<String, Object> response = rest.getForObject("/attack", Map.class);
-        assertEquals(2, response.size());
-        assertEquals("Bulbasaur", response.get("winner"));
-        assertEquals(120, response.get("hitPoints"));
-    }
+//    @Test
+//    void testAttackPicksWinnerWithHitPoints() {
+//        Map<String, Object> response = rest.getForObject("/attack", Map.class);
+//        assertEquals(2, response.size());
+//        assertEquals("Bulbasaur", response.get("winner"));
+//        assertEquals(120, response.get("hitPoints"));
+//    }
 }

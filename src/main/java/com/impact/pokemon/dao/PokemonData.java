@@ -34,14 +34,14 @@ public class PokemonData {
             boolean firstLine = true;
 
             while (fileInput.hasNextLine()) {
-                if(firstLine){
+                if (firstLine){
                     firstLine = false;
                     fileInput.nextLine();
                     continue;}
                 String lineOfText = fileInput.nextLine();
                 String[] lineValues = lineOfText.split(",");
                 //I want to verify that the data I am being passed isn't empty before working with ints, which would cause a null exception
-                if(!lineValues[0].isEmpty()) {
+                if (!lineValues[0].isEmpty()) {
                     Pokemon pokemon = mapRowToPokemon(lineValues);
                     pokemonList.add(pokemon);
                 }

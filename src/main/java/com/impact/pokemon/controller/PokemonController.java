@@ -2,9 +2,12 @@ package com.impact.pokemon.controller;
 
 import com.impact.pokemon.dao.PokemonData;
 import com.impact.pokemon.model.Pokemon;
+import com.impact.pokemon.service.PokemonArenaImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
@@ -21,25 +24,36 @@ public class PokemonController {
     @Resource
     private PokemonData data;
 
-    //this will become /pokemon to retrieve all for the front end
+    @Autowired
+    private PokemonArenaImpl arena;
+
+    //this will become /pokemon to retrieve all for the front end to test
     @GetMapping("pokemon")
     public List<Pokemon> retrieveAllPokemon(){
         return data.retrievePokemon();
     }
 
 
+    /**
+     * Accepts two pokemon names to determine who would win in a fight
+     * @param pokemonA String name of Pokemon A
+     * @param pokemonB String name of Pokemon B
+     * @return Map<String,Object> of which Pokemon won as well as their remaining HP
+     * @throws IOException
+     */
     @GetMapping("attack")
-    public Map<String, Object> attack(String pokemonA, String pokemonB) throws IOException {
+    public Map<String, Object> attack(@RequestParam String pokemonA,@RequestParam String pokemonB) throws IOException {
         logger.info("Requested pokemonA: {}, pokemonB: {}", pokemonA, pokemonB);
 
+        Pokemon winner = arena.pokemonBattle(pokemonA,pokemonB);
 
 
-        // This is just an example of how to read the file contents into a List. Change or refactor as needed
-        //List<String> pokemon = Files.readAllLines(data.getFile().toPath());
-
-        // This is just an example of a response that is hardcoded - Change or refactor as needed
         return Map.of(
-                "winner", pokemonA,
-                "hitPoints", 120);
+                "winner", winner.getName(),
+                "hitPoints", winner.getHitPoints());
+
+//        return Map.of(
+//                "winner", arena.pokemonBattle(pokemonA,pokemonB).getName(),
+//                "hitPoints", arena.pokemonBattle(pokemonA,pokemonB).getHitPoints());
     }
 }
