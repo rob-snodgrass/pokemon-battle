@@ -6,6 +6,7 @@ const app = Vue.createApp({
         const pokedex = Vue.ref([]);
 
         // Fetching Pokemon list from /test for the dropdowns, need to change this endpoint
+        // Sourced from https://lukashermann.dev/writing/how-to-use-async-await-with-vuejs-components/
         const fetchPokedex = async () => {
             try {
                 const response = await fetch("/test");
@@ -21,10 +22,22 @@ const app = Vue.createApp({
             }
         };
 
-        // Need to actually create the ability to send the two pokemon values to the backend, but it won't run without this for the click method
-        const startBattle = () => {
-            console.log("Battle has begun");
-        }
+        const startBattle = async () => {
+            try {
+                // Build the query with selected Pokémon names 
+                const query = `pokemonA=${selectedPokemon1.value}&pokemonB=${selectedPokemon2.value}`;
+
+                // Send a GET request to the /attack API with the two pokemon names and wait for the response
+                const response = await fetch(`/attack?${query}`);
+                const data = await response.json();
+                
+                // Display the name of the winner, sent as a map from the backend
+                winnerName.value = data.winner;
+                console.log(`Winner: ${data.winner}, with ${data.hitPoints} hit points.`);
+            } catch (error) {
+                console.error('Error during battle:', error);
+            }
+        };
 
         // Learned I can use this to call a component once it's been mounted  
         // https://vuejs.org/api/composition-api-lifecycle

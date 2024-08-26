@@ -39,7 +39,7 @@ public class PokemonController {
 
         // This is just an example of a response that is hardcoded - Change or refactor as needed
         return Map.of(
-                "winner", "Bulbasaur",
+                "winner", pokemonA,
                 "hitPoints", 120);
     }
 }
