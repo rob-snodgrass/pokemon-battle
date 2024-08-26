@@ -19,21 +19,62 @@ public class PokemonArenaImpl implements PokemonArena {
         this.pokemonData = pokemonData;
     }
 
+    // For testing
+    public PokemonArenaImpl(){}
+
     @PostConstruct
     public void init(){
         this.pokemonList = pokemonData.retrievePokemon();
     }
 
-    //take the pokemon ID's and do battle by those
+    public Pokemon retrievePokemonByName(String name){
+        for(Pokemon pokemon : pokemonList){
+            if(pokemon.getName().equalsIgnoreCase(name)){
+                return pokemon;
+            }
+        }
+        // Return nothing if the pokemon is not found, must include throws NullPointerException
+        return null;
+    }
 
-    public Pokemon pokemonBattle(int pokemonAId, int pokemonBId){
-        Pokemon pokemonA = new Pokemon();
+    public Pokemon pokemonBattle(String pokemonA, String pokemonB){
+        Pokemon pokemon1 = new Pokemon();
+        // Create a retrieve by name for pokemon object
+
+
+        // Check speed for which one attacks first
+
+
+        // Add battle logic
 
 
 
 
+        return pokemon1;
+    }
 
-        return pokemonA;
+
+
+    private double getEffectivenessModifier(String attackerType, String defenderType) {
+        if (attackerType.equalsIgnoreCase("Fire") && defenderType.equalsIgnoreCase("Grass")) {
+            return 2.0;
+        } else if (attackerType.equalsIgnoreCase("Fire") && defenderType.equalsIgnoreCase("Water")) {
+            return 0.5;
+        } else if (attackerType.equalsIgnoreCase("Water") && defenderType.equalsIgnoreCase("Fire")) {
+            return 2.0;
+        } else if (attackerType.equalsIgnoreCase("Water") && defenderType.equalsIgnoreCase("Electric")) {
+            return 0.5;
+        } else if (attackerType.equalsIgnoreCase("Grass") && defenderType.equalsIgnoreCase("Electric")) {
+            return 2.0;
+        } else if (attackerType.equalsIgnoreCase("Grass") && defenderType.equalsIgnoreCase("Fire")) {
+            return 0.5;
+        } else if (attackerType.equalsIgnoreCase("Electric") && defenderType.equalsIgnoreCase("Water")) {
+            return 2.0;
+        } else if (attackerType.equalsIgnoreCase("Electric") && defenderType.equalsIgnoreCase("Grass")) {
+            return 0.5;
+        } else {
+            return 1.0;
+        }
     }
 
 

@@ -4,5 +4,5 @@ import com.impact.pokemon.model.Pokemon;
 
 public interface PokemonArena {
 
-    Pokemon pokemonBattle(int pokemonAId, int pokemonBId);
+    Pokemon pokemonBattle(String pokemonAId, String pokemonBId);
 }

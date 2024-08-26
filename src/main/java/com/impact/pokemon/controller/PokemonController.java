@@ -22,7 +22,7 @@ public class PokemonController {
     private PokemonData data;
 
     //this will become /pokemon to retrieve all for the front end
-    @GetMapping("test")
+    @GetMapping("pokemon")
     public List<Pokemon> retrieveAllPokemon(){
         return data.retrievePokemon();
     }

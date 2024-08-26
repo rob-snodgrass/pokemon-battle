@@ -5,11 +5,10 @@ const app = Vue.createApp({
         const selectedPokemon2 = Vue.ref('');
         const pokedex = Vue.ref([]);
 
-        // Fetching Pokemon list from /test for the dropdowns, need to change this endpoint
         // Sourced from https://lukashermann.dev/writing/how-to-use-async-await-with-vuejs-components/
         const fetchPokedex = async () => {
             try {
-                const response = await fetch("/test");
+                const response = await fetch("/pokemon");
                 const data = await response.json();
                 pokedex.value = data.map(pokemon => pokemon.name);
                 
