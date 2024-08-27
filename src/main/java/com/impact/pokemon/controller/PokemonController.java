@@ -21,16 +21,17 @@ public class PokemonController {
 
     private static final Logger logger = LoggerFactory.getLogger(PokemonController.class);
 
-    @Resource
-    private PokemonData data;
-
     @Autowired
     private PokemonArenaImpl arena;
 
-    //this will become /pokemon to retrieve all for the front end to test
+    /**
+     * Endpoint for the frontend to populate the list of pokemon available to battle
+     * Does *not* call the file reader but retrieves from the in memory list of pokemon objects
+     * @return List of all pokemon read in from the CSV
+     */
     @GetMapping("pokemon")
     public List<Pokemon> retrieveAllPokemon(){
-        return data.retrievePokemon();
+        return arena.retrievePokemon();
     }
 
 
@@ -45,15 +46,16 @@ public class PokemonController {
     public Map<String, Object> attack(@RequestParam String pokemonA,@RequestParam String pokemonB) throws IOException {
         logger.info("Requested pokemonA: {}, pokemonB: {}", pokemonA, pokemonB);
 
+        return arena.determineWinner(pokemonA, pokemonB);
+
+        /*
         Pokemon winner = arena.pokemonBattle(pokemonA,pokemonB);
-
-
         return Map.of(
                 "winner", winner.getName(),
                 "hitPoints", winner.getHitPoints());
 
-//        return Map.of(
-//                "winner", arena.pokemonBattle(pokemonA,pokemonB).getName(),
-//                "hitPoints", arena.pokemonBattle(pokemonA,pokemonB).getHitPoints());
+         */
+
+
     }
 }

@@ -10,7 +10,7 @@
 </head>
 <body>
 <div id="app" class="section is-size-2">
-    <p>{{ winnerName }} wins</p>
+    <p v-if="battleCompleted">{{ winnerName }} wins with {{ winnerHitPoints }}HP remaining!</p>
     <button @click="startBattle">Battle!</button>
     <hr/>
     <!-- Ideally I wanted to put these into components for the PokemonArena and just use that component twice, 

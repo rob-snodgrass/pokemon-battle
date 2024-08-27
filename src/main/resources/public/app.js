@@ -1,9 +1,11 @@
 const app = Vue.createApp({
     setup() {
         const winnerName = Vue.ref('');
+        const winnerHitPoints = Vue.ref('');
         const selectedPokemon1 = Vue.ref('');
         const selectedPokemon2 = Vue.ref('');
         const pokedex = Vue.ref([]);
+        const battleCompleted = Vue.ref(false);
 
         // Sourced from https://lukashermann.dev/writing/how-to-use-async-await-with-vuejs-components/
         const fetchPokedex = async () => {
@@ -32,6 +34,8 @@ const app = Vue.createApp({
                 
                 // Display the name of the winner, sent as a map from the backend
                 winnerName.value = data.winner;
+                winnerHitPoints.value = data.hitPoints;
+                battleCompleted.value = true;
                 console.log(`Winner: ${data.winner}, with ${data.hitPoints} hit points.`);
             } catch (error) {
                 console.error('Error during battle:', error);
@@ -45,10 +49,12 @@ const app = Vue.createApp({
 
         return {
             winnerName,
+            winnerHitPoints,
             selectedPokemon1,
             selectedPokemon2,
             pokedex,
             startBattle,
+            battleCompleted,
         };
     }
 });
