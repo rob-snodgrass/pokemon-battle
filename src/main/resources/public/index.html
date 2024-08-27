@@ -10,7 +10,7 @@
 </head>
 <body>
 <div id="app" class="section is-size-2">
-    <p v-if="battleCompleted">{{ winnerName }} wins with {{ winnerHitPoints }}HP remaining!</p>
+    <p v-if="battleCompleted">{{ winnerName }} wins with {{ winnerHitPoints }} HP remaining!</p>
     <button @click="startBattle">Battle!</button>
     <hr/>
     <!-- Ideally I wanted to put these into components for the PokemonArena and just use that component twice, 
@@ -24,7 +24,9 @@
                 {{ pokemon }}
             </option>
         </select>
+        <input v-model="inputPokemon1" placeholder="Or type Pokémon 1 name" />
     </div>
+    
     <div>
         <label for="pokemon2">Select Pokémon 2:</label>
         <select v-model="selectedPokemon2" id="pokemon2">
@@ -32,8 +34,12 @@
                 {{ pokemon }}
             </option>
         </select>
+        <input v-model="inputPokemon2" placeholder="Or type Pokémon 2 name" />
     </div>
-    <img v-if="winnerName" :src="`https://img.pokemondb.net/sprites/home/normal/${winnerName.toLowerCase()}.png`" class="sprite"/>
+
+    <p v-if="errorMessage" class="has-text-danger">{{ errorMessage }}</p>
+
+    <img v-if="battleCompleted" :src="`https://img.pokemondb.net/sprites/home/normal/${winnerName.toLowerCase()}.png`" class="sprite"/>
 </div>
 <script src="app.js"></script>
 </body>

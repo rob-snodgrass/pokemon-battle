@@ -40,11 +40,18 @@ public class PokemonArenaImpl implements PokemonArena {
      */
     public Map<String, Object> determineWinner(String pokemonA, String pokemonB){
         Pokemon winner = pokemonBattle(pokemonA,pokemonB);
-        long hitPoints = Math.round(winner.getHitPoints());
+        try {
+            long hitPoints = Math.round(winner.getHitPoints());
 
+            return Map.of(
+                    "winner", winner.getName(),
+                    "hitPoints", hitPoints);
+        }catch (NullPointerException ex){
+            System.out.println("Invalid Pokemon attempted to round");
+        }
         return Map.of(
-                "winner", winner.getName(),
-                "hitPoints", hitPoints);
+                "winner", "Invalid Pokemon Selection",
+                "hitPoints", "Undefined");
     }
 
 
@@ -73,28 +80,34 @@ public class PokemonArenaImpl implements PokemonArena {
     public Pokemon pokemonBattle(String pokemonAName, String pokemonBName){
 
 
-        // Could surround with try/catch in case pokemon is not found, but we're verifying via frontend
-        Pokemon pokemonA = new Pokemon(retrievePokemonByName(pokemonAName));
-        Pokemon pokemonB = new Pokemon(retrievePokemonByName(pokemonBName));
+        try {
+            // Could surround with try/catch in case pokemon is not found, but we're verifying via frontend
+            Pokemon pokemonA = new Pokemon(retrievePokemonByName(pokemonAName));
+            Pokemon pokemonB = new Pokemon(retrievePokemonByName(pokemonBName));
 
-        // Check speed for which one attacks first
-        Pokemon firstAttacker = checkSpeed(pokemonA, pokemonB);
-        Pokemon secondAttacker = (firstAttacker == pokemonA) ? pokemonB : pokemonA;
+            // Check speed for which one attacks first
+            Pokemon firstAttacker = checkSpeed(pokemonA, pokemonB);
+            Pokemon secondAttacker = (firstAttacker == pokemonA) ? pokemonB : pokemonA;
 
-        // Add battle logic
-        while(firstAttacker.getHitPoints()>0 && secondAttacker.getHitPoints()>0){
-            double damage = calculateDamage(firstAttacker, secondAttacker);
-            secondAttacker.setHitPoints(secondAttacker.getHitPoints() - damage);
+            // Add battle logic
+            while (firstAttacker.getHitPoints() > 0 && secondAttacker.getHitPoints() > 0) {
+                double damage = calculateDamage(firstAttacker, secondAttacker);
+                secondAttacker.setHitPoints(secondAttacker.getHitPoints() - damage);
 
-            //Switch their roles after each round
-            Pokemon temp = firstAttacker;
-            firstAttacker = secondAttacker;
-            secondAttacker = temp;
+                //Switch their roles after each round
+                Pokemon temp = firstAttacker;
+                firstAttacker = secondAttacker;
+                secondAttacker = temp;
 
-        }
+            }
+
 
         // Return the pokemon who has health
         return firstAttacker.getHitPoints() > 0 ? firstAttacker : secondAttacker;
+        } catch (NullPointerException ex){
+            System.out.println("Invalid pokemon provided");
+        }
+        return null;
     }
 
 
