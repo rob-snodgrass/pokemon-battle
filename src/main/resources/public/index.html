@@ -1,46 +1,58 @@
 <!doctype html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pokémon Battle</title>
     <link href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css" rel="stylesheet">
-    <link href="app.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/vue@3"></script>
+    <link href="app.css" rel="stylesheet">
 </head>
+
 <body>
-<div id="app" class="section is-size-2">
-    <p v-if="battleCompleted">{{ winnerName }} wins with {{ winnerHitPoints }} HP remaining!</p>
-    <button @click="startBattle">Battle!</button>
-    <hr/>
-    <!-- Ideally I wanted to put these into components for the PokemonArena and just use that component twice, 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
+    <div id="app" class="section is-size-2">
+        <img v-if="battleCompleted"
+            :src="`https://img.pokemondb.net/sprites/home/normal/${winnerName.toLowerCase()}.png`" class="sprite" />
+        <p v-if="battleCompleted" id="battle-result">{{ winnerName }} wins with {{ winnerHitPoints }} HP remaining!</p>
+        <button id="battle-button" class="btn btn-primary btn-lg mb-6" @click="startBattle">Battle!</button>
+        <hr />
+        <!-- Ideally I wanted to put these into components for the PokemonArena and just use that component twice, 
      but I struggled for around 3 hours trying to figure out why my component/router wouldn't work. 
      So I'm just going to stick with simplicity for POC as my Vue knowledge is very rusty. 
      The below work is gathered from a prior project I worked in during my bootcamp in 2022 -->
-    <div>
-        <label for="pokemon1">Select Pokémon 1:</label>
-        <select v-model="selectedPokemon1" id="pokemon1">
-            <option v-for="pokemon in pokedex" :key="pokemon" :value="pokemon">
-                {{ pokemon }}
-            </option>
-        </select>
-        <input v-model="inputPokemon1" placeholder="Or type Pokémon 1 name" />
-    </div>
-    
-    <div>
-        <label for="pokemon2">Select Pokémon 2:</label>
-        <select v-model="selectedPokemon2" id="pokemon2">
-            <option v-for="pokemon in pokedex" :key="pokemon" :value="pokemon">
-                {{ pokemon }}
-            </option>
-        </select>
-        <input v-model="inputPokemon2" placeholder="Or type Pokémon 2 name" />
-    </div>
+        <div class="row">
+            <label class="col" for="pokemon1">Select Pokémon 1:</label>
+            <select class="col" class="select" v-model="selectedPokemon1" id="pokemon1">
+                <option v-for="pokemon in pokedex" :key="pokemon" :value="pokemon"
+                    class="btn btn-danger dropdown-toggle">
+                    {{ pokemon }}
+                </option>
+            </select>
+            <input class="col input-box" v-model="inputPokemon1" placeholder="Type Pokemon name" />
+        </div>
 
-    <p v-if="errorMessage" class="has-text-danger">{{ errorMessage }}</p>
+        <div class="row">
+            <label class="col" for="pokemon2">Select Pokémon 2:</label>
+            <select class="col" class="select" v-model="selectedPokemon2" id="pokemon2">
+                <option v-for="pokemon in pokedex" :key="pokemon" :value="pokemon"
+                    class="btn btn-danger dropdown-toggle">
+                    {{ pokemon }}
+                </option>
+            </select>
+            <input class="col input-box" v-model="inputPokemon2" placeholder="Type Pokemon name" />
+        </div>
 
-    <img v-if="battleCompleted" :src="`https://img.pokemondb.net/sprites/home/normal/${winnerName.toLowerCase()}.png`" class="sprite"/>
-</div>
-<script src="app.js"></script>
+        <p v-if="errorMessage" class="has-text-danger">{{ errorMessage }}</p>
+
+
+    </div>
+    <script src="app.js"></script>
 </body>
+
 </html>

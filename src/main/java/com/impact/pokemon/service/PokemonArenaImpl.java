@@ -30,6 +30,10 @@ public class PokemonArenaImpl implements PokemonArena {
     }
 
 
+    /**
+     * Returns the list of all Pokemon for the front end to populate dropdown selectors from memory to avoid touching the file reader multiple times
+     * @return List<Pokemon> read from the CSV
+     */
     public List<Pokemon> retrievePokemon(){
         return pokemonList;
     }
@@ -39,6 +43,7 @@ public class PokemonArenaImpl implements PokemonArena {
         I wanted to incorporate some kind of method here to return the map of winner to keep the controller stateless
      */
     public Map<String, Object> determineWinner(String pokemonA, String pokemonB){
+
         Pokemon winner = pokemonBattle(pokemonA,pokemonB);
         try {
             long hitPoints = Math.round(winner.getHitPoints());
