@@ -28,8 +28,6 @@ class PokemonArenaTest {
     @Autowired
     private PokemonData pokemonData;
 
-    //PokemonArenaImpl arena;
-
     List <Pokemon> mockPokemonList;
 
     PokemonArenaTest(@LocalServerPort int port) {
@@ -46,7 +44,6 @@ class PokemonArenaTest {
         mockPokemonList.add(new Pokemon(6, "Charizard", "Fire", 534, 78, 84, 78, 109, 85, 100, 1, "false"));
         mockPokemonList.add(new Pokemon(3, "Venusaur", "Grass", 525, 80, 82, 83, 100, 100, 80, 1, "false"));
         mockPokemonList.add(new Pokemon(95, "Onix", "Water", 385, 35, 45, 160, 30, 45, 70, 1, "false"));
-    //    mockPokemonList.add(new Pokemon(145, "Zapdos", "Electric", 580, 90, 90, 85, 125, 90, 100, 1, "true"));
         mockPokemonList.add(new Pokemon(101, "Electrode", "Electric", 480,60,50,70,80,80,140,1,"false"));
 
     }
@@ -93,6 +90,25 @@ class PokemonArenaTest {
         assertEquals("Electrode", winner.getName());
     }
 
+    @Test
+    public void testRetrievePokemonByName_LowerCase() {
+        Pokemon result = arena.retrievePokemonByName("bulbasaur");
+        assertNotNull(result, "Expected Bulbasaur to be found with lowercase input.");
+        assertEquals("Bulbasaur", result.getName(), "Expected name to be Bulbasaur.");
+    }
 
+    @Test
+    public void testRetrievePokemonByName_UpperCase() {
+        Pokemon result = arena.retrievePokemonByName("BULBASAUR");
+        assertNotNull(result, "Expected Bulbasaur to be found with uppercase input.");
+        assertEquals("Bulbasaur", result.getName(), "Expected name to be Bulbasaur.");
+    }
+
+    @Test
+    public void testRetrievePokemonByName_MixedCase() {
+        Pokemon result = arena.retrievePokemonByName("bUlBaSaUr");
+        assertNotNull(result, "Expected Bulbasaur to be found with mixed case input.");
+        assertEquals("Bulbasaur", result.getName(), "Expected name to be Bulbasaur.");
+    }
 
 }

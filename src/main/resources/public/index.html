@@ -20,7 +20,7 @@
         <img v-if="battleCompleted"
             :src="`https://img.pokemondb.net/sprites/home/normal/${winnerName.toLowerCase()}.png`" class="sprite" />
         <p v-if="battleCompleted" id="battle-result">{{ winnerName }} wins with {{ winnerHitPoints }} HP remaining!</p>
-        <button id="battle-button" class="btn btn-primary btn-lg mb-6" @click="startBattle">Battle!</button>
+        <button id="battle-button" class="btn btn-primary mb-6" @click="startBattle">Battle!</button>
         <hr />
         <!-- Ideally I wanted to put these into components for the PokemonArena and just use that component twice, 
      but I struggled for around 3 hours trying to figure out why my component/router wouldn't work. 
@@ -29,7 +29,7 @@
         <div class="row">
             <label class="col" for="pokemon1">Select Pokémon 1:</label>
             <select class="col" class="select" v-model="selectedPokemon1" id="pokemon1">
-                <option v-for="pokemon in pokedex" :key="pokemon" :value="pokemon"
+                <option v-for="pokemon in pokedex" :key="pokemon" :value="pokemon" 
                     class="btn btn-danger dropdown-toggle">
                     {{ pokemon }}
                 </option>

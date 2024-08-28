@@ -12,6 +12,7 @@ import org.springframework.boot.web.client.RestTemplateBuilder;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 import static java.lang.String.format;
 import static org.junit.jupiter.api.Assertions.*;
@@ -22,7 +23,8 @@ class PokemonDataTest {
     private final TestRestTemplate rest;
     @Autowired
     private PokemonData pokemonData;
-    List <Pokemon> pokemonList;
+    //List <Pokemon> pokemonList;
+    Map<String,Pokemon> pokemonMap;
 
     PokemonDataTest(@LocalServerPort int port) {
         rest = new TestRestTemplate(new RestTemplateBuilder().rootUri(format("http://localhost:%d", port)));
@@ -30,13 +32,15 @@ class PokemonDataTest {
 
     @BeforeEach
     public void setup() throws IOException{
-        pokemonList = pokemonData.retrievePokemon();
+        pokemonMap = pokemonData.loadPokemon();
+
     }
+
     @Test
     void testCsvReadCorrectly() {
-        assertNotNull(pokemonList);
-        assertFalse(pokemonList.isEmpty());
-        assertEquals(45,pokemonList.get(0).getHitPoints(),"Bulbasaur has 45 hit points");
+        assertNotNull(pokemonMap);
+        assertFalse(pokemonMap.isEmpty());
+        assertEquals(45,pokemonMap.get("Bulbasaur").getHitPoints(),"Bulbasaur has 45 hit points");
 
     }
 }

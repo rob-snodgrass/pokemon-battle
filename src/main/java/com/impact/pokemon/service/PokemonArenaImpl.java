@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -14,6 +15,7 @@ import java.util.Random;
 public class PokemonArenaImpl implements PokemonArena {
 
     private List<Pokemon> pokemonList;
+    private Map<String,Pokemon> pokemonMap;
     @Autowired
     private PokemonData pokemonData;
 
@@ -26,15 +28,18 @@ public class PokemonArenaImpl implements PokemonArena {
 
     @PostConstruct
     public void init(){
-        this.pokemonList = pokemonData.retrievePokemon();
+        this.pokemonMap = pokemonData.loadPokemon();
     }
 
 
     /**
      * Returns the list of all Pokemon for the front end to populate dropdown selectors from memory to avoid touching the file reader multiple times
      * @return List<Pokemon> read from the CSV
+     * I wanted to have the list be sorted by ID so it would be a little more fun to group older gen pokemon together, but I couldn't find a way to do it easily
+     * I found a stackoverflow saying I could use "Collections.sort(pokemonList, Comparator.comparingInt(ItemEvent::getID));" But I couldn't get it working
      */
-    public List<Pokemon> retrievePokemon(){
+    public List<Pokemon> retrievePokemonList(){
+        pokemonList = new ArrayList<>(pokemonMap.values());
         return pokemonList;
     }
 
@@ -52,7 +57,8 @@ public class PokemonArenaImpl implements PokemonArena {
                     "winner", winner.getName(),
                     "hitPoints", hitPoints);
         }catch (NullPointerException ex){
-            System.out.println("Invalid Pokemon attempted to round");
+            System.out.println("Invalid Pokemon attempted to battle");
+            // This would be where I would log it with whatever logging suite I was assigned
         }
         return Map.of(
                 "winner", "Invalid Pokemon Selection",
@@ -65,15 +71,14 @@ public class PokemonArenaImpl implements PokemonArena {
      * @param name String name of the pokemon
      * @return Pokemon Object matching the name. It cannot be null because the user can only select names that are in the CSV
      */
-    public Pokemon retrievePokemonByName(String name) throws NullPointerException{
-        for(Pokemon pokemon : pokemonList){
-            if (pokemon.getName().equalsIgnoreCase(name)){
-                return pokemon;
-            }
+    public Pokemon retrievePokemonByName(String name) throws NullPointerException {
+        // We need to make sure the cases match the map's cases
+        String formattedName = name.substring(0,1).toUpperCase() + name.substring(1).toLowerCase();
+        Pokemon pokemon = pokemonMap.get(formattedName);
+        if (pokemon == null) {
+            throw new NullPointerException("Pokémon not found: " + name);
         }
-        // Return nothing if the pokemon is not found, must include throws NullPointerException?
-        // Maybe throw new PokemonNotFoundException? Could just verify in Vue
-        return null;
+        return pokemon;
     }
 
     /**
@@ -83,8 +88,6 @@ public class PokemonArenaImpl implements PokemonArena {
      * @return The pokemon Object for who has won
      */
     public Pokemon pokemonBattle(String pokemonAName, String pokemonBName){
-
-
         try {
             // Could surround with try/catch in case pokemon is not found, but we're verifying via frontend
             Pokemon pokemonA = new Pokemon(retrievePokemonByName(pokemonAName));
@@ -111,6 +114,7 @@ public class PokemonArenaImpl implements PokemonArena {
         return firstAttacker.getHitPoints() > 0 ? firstAttacker : secondAttacker;
         } catch (NullPointerException ex){
             System.out.println("Invalid pokemon provided");
+            // This is the other spot I would log whatever information I could, maybe a custom pokemonNotFound exception?
         }
         return null;
     }

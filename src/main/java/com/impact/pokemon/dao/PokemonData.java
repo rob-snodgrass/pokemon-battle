@@ -7,9 +7,7 @@ import org.springframework.stereotype.Component;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 /**
  * !! Feel free to change everything about this !!
@@ -25,8 +23,9 @@ public class PokemonData {
     }
 
 
-    public List<Pokemon> retrievePokemon() {
-        List<Pokemon> pokemonList = new ArrayList<>();
+    public Map<String, Pokemon> loadPokemon() {
+        //List<Pokemon> pokemonList = new ArrayList<>();
+        Map<String,Pokemon> pokemonMap = new HashMap<>();
 
         try (Scanner fileInput = new Scanner(file)) {
 
@@ -43,7 +42,8 @@ public class PokemonData {
                 //I want to verify that the data I am being passed isn't empty before working with ints, which would cause a null exception
                 if (!lineValues[0].isEmpty()) {
                     Pokemon pokemon = mapRowToPokemon(lineValues);
-                    pokemonList.add(pokemon);
+                    pokemonMap.put(pokemon.getName(),pokemon);
+                    //pokemonList.add(pokemon);
                 }
             }
 
@@ -51,7 +51,9 @@ public class PokemonData {
             //todo throw custom exception
             ex.printStackTrace();
         }
-        return pokemonList;
+        //return pokemonList;
+
+        return pokemonMap;
     }
 
     private Pokemon mapRowToPokemon(String[] values){

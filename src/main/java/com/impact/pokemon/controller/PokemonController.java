@@ -31,7 +31,7 @@ public class PokemonController {
      */
     @GetMapping("pokemon")
     public List<Pokemon> retrieveAllPokemon(){
-        return arena.retrievePokemon();
+        return arena.retrievePokemonList();
     }
 
 

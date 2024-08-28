@@ -44,14 +44,14 @@ const app = Vue.createApp({
             // console.log(selectedPokemon1.value);
             // console.log(selectedPokemon2.value);
 
-            if (!validatePokemon(pokemonA)) {
-                errorMessage.value = `Pokémon "${pokemonA}" does not exist in the pokedex.`;
-                return;
-            }
-            if (!validatePokemon(pokemonB)) {
-                errorMessage.value = `Pokémon "${pokemonB}" does not exist in the pokedex.`;
-                return;
-            }
+            // if (!validatePokemon(pokemonA)) {
+            //     errorMessage.value = `Pokémon "${pokemonA}" does not exist in the pokedex.`;
+            //     return;
+            // }
+            // if (!validatePokemon(pokemonB)) {
+            //     errorMessage.value = `Pokémon "${pokemonB}" does not exist in the pokedex.`;
+            //     return;
+            // }
 
             // Reset any prior errors, hide battle text
             errorMessage.value = ''; 
@@ -65,6 +65,12 @@ const app = Vue.createApp({
                 // Send a GET request to the /attack API with the two pokemon names and wait for the response
                 const response = await fetch(`/attack?${query}`);
                 const data = await response.json();
+
+                // I commented out my initial validation of pokemon names to let the backend handle it
+                if(data.hitPoints == "Undefined"){
+                    errorMessage.value = `One or both Pokémon do not exist in the pokedex.`;
+                    return;
+                }
                 
                 // Display the name of the winner, sent as a map from the backend
                 winnerName.value = data.winner;
